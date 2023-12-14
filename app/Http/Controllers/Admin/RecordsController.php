@@ -13,15 +13,59 @@ class RecordsController extends Controller
     	return view('admin.records.addRecords',[
     		'title' => 'Add Records | Admin',
     		'pagetitle' => 'Add Records | Admin'
-
     	]);
     }
-    public function category()
+    public function delete($id)
     {
-        return view('admin.records.category',[
-            'title' => 'Category | Admin',
-            'pagetitle' => 'Category | Admin'
+        $record = Record::find($id);
 
+        if ($record) {
+            $record->delete();
+            return redirect()->route('records.allrecords')->with('success', 'Records deleted successfully');
+        } else {
+            return redirect()->route('records.allrecords')->with('error', 'Records not found');
+        }
+    }
+    public function edit(Request $request)
+    {
+        $record = record::find($request->id);
+
+        return view('admin.records.edit', [
+            'pagetitle' => 'Edit',
+            'title' => 'Edit | Admin',
+            'record' => $record
+        ]);
+    }
+     public function update(Request $request)
+    {
+        $storeRecord = Record::find($request->id);
+        $storeRecord->title = $request->title;
+        $storeRecord->description = $request->description;
+        $storeRecord->date = $request->date;
+        $storeRecord->category = $request->category;
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $target_dir = "images/records/";
+            $target_file = $target_dir . uniqid() . '_' . basename($image->getClientOriginalName());
+            $image->move($target_dir, $target_file);
+            $storeRecord->img = $target_file;
+        }
+
+        if ($storeRecord->save()) {
+            return redirect()->back()->with('success', 'Records updated successfully');
+        } else {
+            return redirect()->back()->with('error', 'Failed to update records');
+        }
+    }
+
+    public function view(Request $request)
+    {   
+        $record = Record::where('id', $request->id)->first();
+        return view('admin.records.view',[
+            'title' => 'View | Admin',
+            'pagetitle' => 'View | Admin',
+            'record' => $record
         ]);
     }
     public function allrecords()
@@ -37,11 +81,10 @@ class RecordsController extends Controller
     }
     public function store(Request $request)
     {
-        $saveRecords = new record;
+        $saveRecords = new Record();
         $saveRecords->title = $request->title;
         $saveRecords->description = $request->description;
         $saveRecords->date = $request->date;
-        $saveRecords->files  = $request->files;
          // Check if the file was uploaded without errors
             if ($_FILES["image"]["error"] == UPLOAD_ERR_OK) {
                 
@@ -68,8 +111,8 @@ class RecordsController extends Controller
             } else {
                 echo "Error: " . $_FILES["image"]["error"];
             }
-        $saveRecords->files  = $request->files;
-
+        
+        $saveRecords->category = $request->category;
 
         if ($saveRecords->save()) {
             return redirect()->back();

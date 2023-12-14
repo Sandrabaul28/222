@@ -33,8 +33,14 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function(){
 Route::prefix('records')->middleware(['auth'])->group(function(){
 	Route::get('/addRecords', [App\Http\Controllers\Admin\RecordsController::class, 'addRecords'])->name('records.addRecords');
     Route::post('/store', [App\Http\Controllers\Admin\RecordsController::class, 'store'])->name('records.store');
-
     Route::get('/allrecords', [App\Http\Controllers\Admin\RecordsController::class, 'allrecords'])->name('records.allrecords');
+    Route::get('/delete/{id}', [App\Http\Controllers\Admin\RecordsController::class, 'delete'])->name('records.delete');
+    Route::get('/edit/{id}', [App\Http\Controllers\Admin\RecordsController::class, 'edit'])->name('records.edit');
+    Route::get('/update', [App\Http\Controllers\Admin\RecordsController::class, 'update'])->name('records.update');
     Route::get('/view/{id}', [App\Http\Controllers\Admin\RecordsController::class, 'view'])->name('records.view');
     
+});
+
+Route::prefix('files')->middleware(['auth'])->group(function(){
+    Route::get('/allfiles', [App\Http\Controllers\Admin\FilesController::class, 'allfiles'])->name('files.allfiles');
 });

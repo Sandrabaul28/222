@@ -2,11 +2,24 @@
 
 
 @section('content')
-  <div class="col-lg-12 grid-margin stretch-card">
-    <div class="card">
+
+
+    
+<div class="col-lg-12 grid-margin stretch-card">
       <div class="card-body">
+        <div class="card">
+                <div class="row">
+                  <div class="col-lg-12 grid-margin stretch-card">
+                </div>
+        </div>
+    </div>
         <h4 class="card-title">{{ $title }}</h4>
-        </p>
+        <div class="card">
+                <div class="row">
+                  <div class="col-lg-12 grid-margin stretch-card">
+                    <a href="{{ route('records.addRecords')}}" class="btn btn-primary btn-rounded ">Add Records</a>
+                </div>
+        </div>
         <div class="table-responsive">
           <table class="table table-bordered">
             <thead>
@@ -15,8 +28,8 @@
                 <th>Title </th>
                 <th>Description</th>
                 <th>Date</th>
-                <th>Files</th>
                 <th>Category</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -26,9 +39,13 @@
                     <td>{{ $record->title }}</td>
                     <td>{{ $record->description }}</td>
                     <td>{{ $record->date }}</td>
-                    <td>{{ $record->files }}</td>
                     <td>{{ $record->category }}</td>
-                    <td><a href="{{ route('records.view', ['id' => $records->id]) }}">View</a></td>
+                    <td>
+                      <a href="{{ route('records.view', ['id'=> $record->id]) }}">View</a>
+                      <a href="{{ route('records.delete', ['id'=> $record->id]) }}">Delete</a>
+                      <a href="{{ route('records.edit', ['id'=> $record->id]) }}">Edit</a>
+                    </td>
+                    
                   </tr>
               @endforeach
             </tbody>

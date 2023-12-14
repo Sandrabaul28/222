@@ -23,12 +23,13 @@
     <!-- End layout styles -->
     <link rel="shortcut icon" href="{{ asset('myassets/images/favicon.png')}}">
     <style>
-      input[type='text']{
-        color: white;
-      }/*
+      
+      input[type='date']{
+        color: black;
+      }
       input[type='text']:focus{
-        color: white;
-      }*/
+        color: black;
+      }
     </style>
   </head>
   <body>
